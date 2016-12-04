@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ $# -ne 1 ]; then
-    echo: usage: $0 yourdomain
+    echo Usage: $0 yourdomain
     exit 1
 fi
 
