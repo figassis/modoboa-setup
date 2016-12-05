@@ -1,0 +1,13 @@
+%echo Generating a default key
+Key-Type: default
+Subkey-Type: default
+Name-Real: admin_name
+Name-Comment: modoboa encryption key
+Name-Email: admin_email
+Expire-Date: 0
+Passphrase: very_long_passphrase
+%pubring mydomain.pub
+%secring mydomain.sec
+# Do a commit here, so that we can later print "done" :-)
+%commit
+%echo done
