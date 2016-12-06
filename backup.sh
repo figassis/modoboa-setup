@@ -1,17 +1,16 @@
 #!/bin/bash
 
-source backup.ini
+source backup/backup.ini
 source aws.ini
 
 # Export some ENV variables so you don't have to type anything
-export AWS_ACCESS_KEY_ID=$KEY_ID
-export AWS_SECRET_ACCESS_KEY=$SECRET_KEY
+export AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY
+export PASSPHRASE=GPG_PW
+#export GPG_PW
 
 # The S3 destination followed by bucket name
-DEST="s3://s3.amazonaws.com/$BUCKET"
-
-# Your GPG key
-GPG_KEY="backup/"$DOMAIN".pub"
+DEST="s3://s3.amazonaws.com/$AWS_BUCKET"
 
 HOST=`hostname`
 DATE=`date +%Y-%m-%d`
@@ -20,10 +19,12 @@ TODAY=$(date +%d%m%Y)
 #Create MySQL backups
 mkdir ~/mysql_backup
 
-mysqldump –lock-all-tables -u $MODOBOA_DB_USER -pMODOBOA_DB_PW $MODOBOA_DATABASE > "~/mysql_backup/$MODOBOA_DATABASE.sql"
-mysqldump –lock-all-tables -u $SPAMASSASSINUSER -p$SPAMASSASSINPW $SPAMASSASSINDB > "~/mysql_backup/SPAMASSASSINDB.sql"
-mysqldump –lock-all-tables -u $AMAVISDBUSER -p$AMAVISDBPW $AMAVISDB > "~/mysql_backup/$AMAVISDB.sql"
+mysqldump --lock-tables -u $DBROOT -p$DBROOT_PASS $MODOBOA_DATABASE > ~/mysql_backup/$MODOBOA_DATABASE.sql
+mysqldump --lock-tables -u $DBROOT -p$DBROOT_PASS $SPAMASSASSINDB > ~/mysql_backup/$SPAMASSASSINDB.sql
+mysqldump --lock-tables -u $DBROOT -p$DBROOT_PASS $AMAVISDB > ~/mysql_backup/$AMAVISDB.sql
 
+ls ~/mysql_backup
+exit
 is_running=$(ps -ef | grep duplicity  | grep python | wc -l)
 
 if [ ! -d /var/log/duplicity ];then
@@ -66,8 +67,8 @@ if [ $is_running -eq 0 ]; then
 
     duplicity \
         ${FULL} \
-        --encrypt-key=${GPG_KEY} \
-        --sign-key=${GPG_KEY} \
+#        --encrypt-key=${GPG_KEY} \
+#        --sign-key=${GPG_KEY} \
         --include=~/mysql_backup \
         --include=$MODOBOA_DIR \
         --include=$NGINX_DIR \
@@ -96,6 +97,7 @@ if [ $is_running -eq 0 ]; then
     # Reset the ENV variables. Don't need them sitting around
     unset AWS_ACCESS_KEY_ID
     unset AWS_SECRET_ACCESS_KEY
+    unset PASSPHRASE
     
     #Remove temporary mysql dumps
     rm -rf ~/mysql_backup
