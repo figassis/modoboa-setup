@@ -1,0 +1,18 @@
+
+# Settings below were appended after installation
+
+## TLS settings
+smtpd_use_tls = yes
+smtpd_tls_auth_only = yes
+smtpd_tls_security_level = may
+smtp_tls_security_level = may
+smtp_tls_CApath = /etc/letsencrypt/live/$myhostname
+smtpd_tls_CApath = /etc/letsencrypt/live/$myhostname
+
+## Postcreen settings
+postscreen_access_list =
+       permit_mynetworks,
+       cidr://etc/postfix/postscreen_nellcorp_whitelist.cidr,
+       cidr:/etc/postfix/postscreen_spf_whitelist.cidr,
+       cidr:/etc/postfix/postscreen_spf_blacklist.cidr
+postscreen_blacklist_action = enforce
