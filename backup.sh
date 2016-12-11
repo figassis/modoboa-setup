@@ -6,7 +6,7 @@ source local/aws.ini
 # Export some ENV variables so you don't have to type anything
 export AWS_ACCESS_KEY_ID
 export AWS_SECRET_ACCESS_KEY
-export PASSPHRASE=`cat backup/password.txt`
+export PASSPHRASE=`cat local/password.txt`
 #export GPG_PW
 
 # The S3 destination followed by bucket name
