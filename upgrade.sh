@@ -10,3 +10,4 @@ yes | python manage.py collectstatic
 exit
 sudo service nginx restart
 sudo service postfix restart
+sudo service uwsgi restart
