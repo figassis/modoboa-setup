@@ -1,16 +1,15 @@
 #!/bin/bash
 [ `whoami` = root ] || { echo $0 must be ran as root; exit 1; }
 
+source /home/$SUDO_USER/admin/volume.ini
 
-if [ $# -ne 1 ]; then
-    echo Usage: sudo $0 volume_name
+if [ -z $volume ]; then
+    echo Please name sure volume is defined in /home/$SUDO_USER/admin/volume.ini
     exit 1
 fi
 
-volume=$1
-
 sudo mkdir -p /mnt/$volume
-if [[ $(grep -q "$volume" "/etc/fstab") ]] then;
+if [ $(grep -q "$volume" "/etc/fstab") ]; then
     echo /dev/disk/by-id/scsi-0DO_Volume_$volume /mnt/$volume ext4 defaults,nofail,discard 0 0 | sudo tee -a /etc/fstab
 else
     echo "Entry in fstab exists. Mounting now."
@@ -18,7 +17,7 @@ fi
 
 sudo mount -a
 
-if [ -d "$SUDO_USER/admin" ]; then
+if [ -d "/home/$SUDO_USER/admin" ]; then
     echo $volume > /home/$SUDO_USER/admin/volume.ini
     chown $SUDO_USER:$SUDO_USER /home/$SUDO_USER/admin/volume.ini
     exit

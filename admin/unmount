@@ -16,3 +16,4 @@ fi
 sudo /home/$SUDO_USER/admin/services stop
 sudo fuser -k /mnt/$volume
 sudo umount /mnt/$volume
+sudo rm -rf /mnt/$volume
