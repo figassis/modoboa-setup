@@ -14,6 +14,8 @@ if [ -z $volume ]; then
 fi
 
 if [ -d "/mnt/$volume" ] && [ -L "/srv/modoboa" ] && [ -L "/srv/vmail" ] && [ -d "/mnt/$volume/modoboa" ] && [ -d "/mnt/$volume/vmail" ]; then
+	echo "This server had previous mounted volume!"
+	exit
 	sudo rm /srv/*
 	sudo chown -R modoboa:modoboa /mnt/$volume/modoboa
 	sudo chown -R vmail:vmail /mnt/$volume/vmail
@@ -26,6 +28,8 @@ if [ -d "/mnt/$volume" ] && [ -L "/srv/modoboa" ] && [ -L "/srv/vmail" ] && [ -d
 fi
 
 if [ -d "/mnt/$volume" ] && [ -d "/srv/modoboa" ] && [ -d "/srv/vmail" ]; then
+	echo "This is a new migration!"
+	exit
 	sudo mv /srv/* /mnt/$volume/
 	sudo chown -R modoboa:modoboa /mnt/$volume/modoboa
 	sudo chown -R vmail:vmail /mnt/$volume/vmail
