@@ -1,0 +1,34 @@
+#!/bin/bash
+#	Use this script to move a new modoboa installation to a newly mounted Block Storage device.
+#	It will do the following:
+#	1. Move /srv/modoboa and /srv/vmail to the mounted device's root
+#	2. Create /srv/modoboa and /srv/vmail as symbolic links to the moved folders
+#	3. Restart modoboa, dovecot, postfix, amavis, spamassassin and nginx
+
+[ `whoami` = root ] || { echo $0 must be ran as root; exit 1; }
+source /home/$SUDO_USER/admin/volume.ini
+
+if [ -z $volume ]; then
+    echo Please name sure volume is defined in /home/$SUDO_USER/admin/volume.ini
+    exit 1
+fi
+
+if [ -d "/mnt/$volume" ] && [ -L "/srv/modoboa" ] && [ -L "/srv/vmail" ] && [ -d "/mnt/$volume/modoboa" ] && [ -d "/mnt/$volume/vmail" ]; then
+	sudo rm /srv/*
+	sudo chown -R modoboa:modoboa /mnt/$volume/modoboa
+	sudo chown -R vmail:vmail /mnt/$volume/vmail
+	
+	sudo ln -s /mnt/$volume/modoboa /srv/modoboa
+	sudo ln -s /mnt/$volume/vmail /srv/vmail
+	
+	sudo /home/$SUDO_USER/admin/services restart
+	exit
+fi
+
+if [ -d "/mnt/$volume" ] && [ -d "/srv/modoboa" ] && [ -d "/srv/vmail" ]; then
+	sudo mv /srv/* /mnt/$volume/
+	sudo chown -R modoboa:modoboa /mnt/$volume/modoboa
+	sudo chown -R vmail:vmail /mnt/$volume/vmail
+	sudo /home/$SUDO_USER/admin/services restart
+	exit
+fi

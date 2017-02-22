@@ -1,0 +1,18 @@
+#!/bin/bash
+[ `whoami` = root ] || { echo $0 must be ran as root; exit 1; }
+
+if [ ! -f /home/$SUDO_USER/admin/volume.ini ]; then
+    echo Please make sure /home/$SUDO_USER/admin/volume.ini exists
+    exit 1
+fi
+
+source /home/$SUDO_USER/admin/volume.ini
+
+if [ -z $volume ]; then
+    echo Please make sure volume is defined in /home/$SUDO_USER/admin/volume.ini
+    exit 1
+fi
+
+sudo /home/$SUDO_USER/admin/services stop
+sudo fuser -k /mnt/$volume
+sudo umount /mnt/$volume

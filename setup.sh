@@ -76,7 +76,13 @@ touch /etc/postfix/postscreen_spf_blacklist.cidr
 mv spf-tools /usr/local/bin/
 mv postwhite /usr/local/bin/
 cp local/tasks /etc/cron.d/maintenance
-
+mv admin ../admin
+sudo ln -s /usr/local/bin/postwhite/postwhite ../admin/postwhite
+mkdir ../config
+sudo ln -s /etc/dovecot ../config/dovecot
+sudo ln -s /srv/modoboa/instance ../config/modoboa
+sudo ln -s /etc/nginx ../config/nginx
+sudo ln -s /etc/postfix ../config/postfix
 
 #`cat conf/postfix.cf >> /etc/postfix/main.cf`
 #cp conf/dovecot.conf /etc/dovecot/local.conf

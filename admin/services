@@ -1,0 +1,14 @@
+#!/bin/bash
+[ `whoami` = root ] || { echo $0 must be ran as root; exit 1; }
+
+if [ $# -ne 1 ]; then
+    echo Usage: sudo $0 start|stop|restart
+    exit 1
+fi
+option=$1
+sudo service dovecot $option
+sudo service postfix $option
+sudo service spamassassin $option
+sudo service amavis $option
+sudo service uwsgi $option
+sudo service nginx $option
