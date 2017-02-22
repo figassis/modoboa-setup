@@ -15,7 +15,7 @@ sudo mount -o discard,defaults /dev/disk/by-id/scsi-0DO_Volume_$volume /mnt/$vol
 echo /dev/disk/by-id/scsi-0DO_Volume_$volume /mnt/$volume ext4 defaults,nofail,discard 0 0 | sudo tee -a /etc/fstab
 
 if [ -d "$SUDO_USER/admin" ]; then
-    echo $volume > /home/$SUDO_USER/admin/volume.ini
+    echo "volume=$volume" > /home/$SUDO_USER/admin/volume.ini
     chown $SUDO_USER:$SUDO_USER /home/$SUDO_USER/admin/volume.ini
     exit
 fi
