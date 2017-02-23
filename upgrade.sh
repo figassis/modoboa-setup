@@ -1,4 +1,11 @@
 #!/bin/bash
+#Upgrade
+#Backup /srv/modoboa/instance/sitestatic/css
+#Backup /srv/modoboa/instance/media
+#Change pdf text: /srv/modoboa/env/lib/python2.7/site-packages/modoboa_pdfcredentials/documents.py
+#Change feed url: /srv/modoboa/env/lib/python2.7/site-packages/modoboa/core/views/dashboard.py
+#Change blog link: /srv/modoboa/env/lib/python2.7/site-packages/modoboa/core/templates/core/dashboard.html
+
 echo "Change version file. Also, script not ready."
 exit
 sudo su - modoboa
