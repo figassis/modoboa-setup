@@ -18,7 +18,7 @@ fi
 sudo mount -a
 
 if [ -d "/home/$SUDO_USER/admin" ]; then
-    echo $volume > /home/$SUDO_USER/admin/volume.ini
+    echo "volume=$volume" > /home/$SUDO_USER/admin/volume.ini
     chown $SUDO_USER:$SUDO_USER /home/$SUDO_USER/admin/volume.ini
     exit
 fi

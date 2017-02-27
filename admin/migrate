@@ -33,6 +33,8 @@ if [ -d "/mnt/$volume" ] && [ -d "/srv/modoboa" ] && [ -d "/srv/vmail" ]; then
 	sudo mv /srv/* /mnt/$volume/
 	sudo chown -R modoboa:modoboa /mnt/$volume/modoboa
 	sudo chown -R vmail:vmail /mnt/$volume/vmail
+	sudo ln -s /mnt/$volume/modoboa /srv/modoboa
+	sudo ln -s /mnt/$volume/vmail /srv/vmail
 	sudo /home/$SUDO_USER/admin/services restart
 	exit
 fi
