@@ -81,6 +81,7 @@ if [ $is_running -eq 0 ]; then
         --include=$RAZOR_DIR \
         --include=$POSTFIX \
         --include=$DOVECOT_DIR \
+	--include=/mnt \
         --include=$SPAMASSASSIN_DIR \
         --include=/home/$BACKUP_USER/admin \
         --include=/home/$BACKUP_USER/config \
