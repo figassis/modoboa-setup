@@ -84,7 +84,9 @@ sudo ln -s /srv/modoboa/instance ../config/modoboa
 sudo ln -s /etc/nginx ../config/nginx
 sudo ln -s /etc/postfix ../config/postfix
 
-#`cat conf/postfix.cf >> /etc/postfix/main.cf`
+echo ""  >> /etc/postfix/main.cf
+cp conf/sasl_passwd /etc/postfix/sasl_passwd
+cat conf/postfix.cf >> /etc/postfix/main.cf
 #cp conf/dovecot.conf /etc/dovecot/local.conf
 
 ./firewall.sh
