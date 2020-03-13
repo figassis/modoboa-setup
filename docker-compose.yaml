@@ -1,0 +1,53 @@
+version: "3"
+services:
+  web:
+    image: bitnami/nginx:latest
+    restart: always
+    container_name: web
+    ports:
+      - 443:8443
+      - 80:8080
+    volumes:
+      - /home/nellcorp/modoboa-setup/www:/opt/bitnami/nginx/conf/vhosts:ro
+      - /srv/modoboa/instance:/app
+      - ./ssl:/etc/letsencrypt:ro
+      - /run/uwsgi/app/modoboa_instance/socket:/modoboa-socket:rw
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: "3"
+  db:
+    image: mysql:5.7
+    restart: always
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - /var/lib/mysql:/var/lib/mysql
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: "3"
+  ssl:
+      image: adferrand/letsencrypt-dns
+      container_name: ssl
+      volumes:
+          - ./ssl:/etc/letsencrypt
+          - ./domains.conf:/etc/letsencrypt/domains.conf
+      environment:
+          LETSENCRYPT_USER_MAIL: admin@nellcorp.com
+          LEXICON_PROVIDER: route53
+          LEXICON_ROUTE53_AUTH_USERNAME: ${AWS_ACCESS_KEY_ID}
+          LEXICON_ROUTE53_AUTH_TOKEN: ${AWS_SECRET_ACCESS_KEY}
+          LETSENCRYPT_STAGING: "false"
+          CERTS_DIRS_MODE: "0750" #0755
+          CERTS_FILES_MODE: "0640" #0644
+          CERTS_USER_OWNER: ${CERTS_USER_OWNER}
+          CERTS_GROUP_OWNER: ${CERTS_GROUP_OWNER}
+      logging:
+          driver: "json-file"
+          options:
+              max-size: "10M"
+              max-file: "3"
