@@ -8,7 +8,7 @@ fi
 sudo apt-add-repository -y ppa:duplicity-team/ppa
 sudo add-apt-repository -y ppa:chris-lea/python-boto
 sudo apt-get update
-sudo apt-get install -y build-essential python-pip python-rrdtool python-mysqldb python-dev libcairo2-dev ibpango1.0-dev librrd-dev libxml2-dev libxslt-dev zlib1g-dev duplicity python-boto mailutils ufw
+sudo apt-get install -y build-essential python-pip python-rrdtool python-mysqldb python-dev libcairo2-dev ibpango1.0-dev librrd-dev libxml2-dev libxslt-dev zlib1g-dev duplicity python-boto mailutils ufw postfix-mysql dovecot-mysql
 git clone https://github.com/modoboa/modoboa-installer
 
 #Setup Variables
