@@ -60,10 +60,9 @@ services:
     hostname: monitor.bantumail.com
     container_name: netdata
     image: netdata/netdata
+    privileged: true
     depends_on: 
       - ssl
-    expose: 
-      - 19999
     environment: 
       PGID: 999
     cap_add:
