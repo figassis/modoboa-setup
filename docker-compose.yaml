@@ -16,6 +16,8 @@ services:
     depends_on: 
       - ssl
       - monitor
+    links: 
+      - "monitor:netdata"
     logging:
       driver: "json-file"
       options:
