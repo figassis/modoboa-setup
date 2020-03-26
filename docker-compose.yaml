@@ -15,9 +15,7 @@ services:
       - ./htpasswd:/htpasswd:ro
     depends_on: 
       - ssl
-      - netdata
-    links:
-      - "netdata:netdata"
+      - monitor
     logging:
       driver: "json-file"
       options:
@@ -57,9 +55,10 @@ services:
           options:
               max-size: "10M"
               max-file: "3"
-  netdata:
+  monitor:
     restart: always
     hostname: monitor.bantumail.com
+    container_name: netdata
     image: netdata/netdata
     depends_on: 
       - ssl
