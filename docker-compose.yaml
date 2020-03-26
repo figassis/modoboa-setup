@@ -54,6 +54,7 @@ services:
               max-file: "3"
   netdata:
     restart: always
+    container_name: netdata
     hostname: monitor.bantumail.com
     image: netdata/netdata
     environment: 
