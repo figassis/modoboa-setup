@@ -3,3 +3,4 @@ local/*
 modoboa-installer
 ssl/*
 .env
+htpasswd

@@ -12,6 +12,7 @@ services:
       - /srv/modoboa/instance:/app
       - ./ssl:/etc/letsencrypt:ro
       - /run/uwsgi/app/modoboa_instance/socket:/modoboa-socket:rw
+      - ./htpasswd:/htpasswd:ro
     logging:
       driver: "json-file"
       options:
@@ -51,3 +52,22 @@ services:
           options:
               max-size: "10M"
               max-file: "3"
+  netdata:
+    restart: always
+    hostname: monitor.bantumail.com
+    image: netdata/netdata
+    environment: 
+      PGID: 999
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor:unconfined
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10M"
+        max-file: "3"
