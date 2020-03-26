@@ -16,6 +16,8 @@ services:
     depends_on: 
       - ssl
       - netdata
+    links:
+      - "netdata:netdata"
     logging:
       driver: "json-file"
       options:
