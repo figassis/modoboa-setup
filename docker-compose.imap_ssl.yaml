@@ -1,0 +1,23 @@
+version: "3"
+services:
+  ssl:
+      image: adferrand/letsencrypt-dns
+      container_name: imap_ssl
+      volumes:
+          - ./ssl:/etc/letsencrypt
+          - ./imap_domains.conf:/etc/letsencrypt/domains.conf
+      environment:
+          LETSENCRYPT_USER_MAIL: admin@nellcorp.com
+          LEXICON_PROVIDER: route53
+          LEXICON_ROUTE53_AUTH_USERNAME: ${AWS_ACCESS_KEY_ID}
+          LEXICON_ROUTE53_AUTH_TOKEN: ${AWS_SECRET_ACCESS_KEY}
+          LETSENCRYPT_STAGING: "false"
+          CERTS_DIRS_MODE: "0750" #0755
+          CERTS_FILES_MODE: "0640" #0644
+          CERTS_USER_OWNER: 0
+          CERTS_GROUP_OWNER: 0
+      logging:
+          driver: "json-file"
+          options:
+              max-size: "10M"
+              max-file: "3"
