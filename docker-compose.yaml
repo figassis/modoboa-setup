@@ -6,8 +6,8 @@ services:
     container_name: web
     # network_mode: host
     ports:
-      - 443:8443
       - 80:8080
+      - 443:8443
     volumes:
       - /home/nellcorp/modoboa-setup/www:/opt/bitnami/nginx/conf/vhosts:ro
       - /srv/modoboa/instance:/app
@@ -16,7 +16,6 @@ services:
       - ./htpasswd:/htpasswd:ro
     depends_on: 
       - ssl
-      - monitor
     logging:
       driver: "json-file"
       options:
@@ -39,6 +38,7 @@ services:
   ssl:
       image: adferrand/letsencrypt-dns
       container_name: ssl
+      restart: always
       volumes:
           - ./ssl:/etc/letsencrypt
           - ./domains.conf:/etc/letsencrypt/domains.conf
@@ -57,29 +57,3 @@ services:
           options:
               max-size: "10M"
               max-file: "3"
-  monitor:
-    restart: always
-    # network_mode: host
-    hostname: monitor.bantumail.com
-    container_name: netdata
-    image: netdata/netdata
-    depends_on: 
-      - ssl
-    environment: 
-      PGID: 999
-    cap_add:
-      - SYS_PTRACE
-    security_opt:
-      - apparmor:unconfined
-    volumes:
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      # - /etc/passwd:/host/etc/passwd:ro
-      # - /etc/group:/host/etc/group:ro
-      # - /etc/os-release:/host/etc/os-release:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10M"
-        max-file: "3"
